@@ -80,9 +80,8 @@
     </div>  
 
     <div class="card-footer d-flex justify-content-between align-items-center">
-
         <small class="text-muted">🎟️ @Model.TotalBets apuestas realizadas</small>
-
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Editar</a> 
         @if (Model.Status == MatchStatus.Scheduled)
         {
             <button class="btn btn-success" disabled
