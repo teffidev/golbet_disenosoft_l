@@ -1,5 +1,4 @@
-﻿@page
-@model GolBet.Services.DTOs.MatchFormDto   
+﻿@model GolBet.Services.DTOs.MatchFormDto   
 
 <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" class="col-lg-7"> 
     <input type="hidden" asp-for="Id" /> 

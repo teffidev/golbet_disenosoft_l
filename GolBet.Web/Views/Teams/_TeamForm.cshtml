@@ -1,5 +1,4 @@
-﻿@page
-@model GolBet.Services.DTOs.TeamFormDto  
+﻿@model GolBet.Services.DTOs.TeamFormDto  
 
 <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" class="col-lg-6">
     <input type="hidden" asp-for="Id" />

@@ -1,5 +1,4 @@
-﻿@* GolBet.Web/Views/Matches/Index.cshtml *@ 
-@using GolBet.Entities.Enums
+﻿@using GolBet.Entities.Enums
 @using GolBet.Web.Helpers
 @model IEnumerable<GolBet.Services.DTOs.MatchDto>
 @{
@@ -30,7 +29,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4"> 
     <h2>⚽ Cartelera de partidos</h2> 
-    <a asp-action="Create" class="btn btn-success">+ Nuevo partido</a> 
+    <@if (User.IsInRole("Admin")) 
+    { 
+        <a asp-action="Create" class="btn btn-success">+ Nuevo partido</a> 
+    } 
 </div> 
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">

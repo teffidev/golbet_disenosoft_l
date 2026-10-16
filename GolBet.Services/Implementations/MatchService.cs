@@ -5,6 +5,7 @@ using GolBet.Repositories.Interfaces;
 using GolBet.Services.DTOs;
 using GolBet.Services.Helpers;
 using GolBet.Services.Interfaces;
+
 namespace GolBet.Services.Implementations;
 
 public class MatchService : IMatchService
@@ -27,7 +28,9 @@ public class MatchService : IMatchService
     public async Task<MatchDetailDto?> GetDetailAsync(int id)
     {
         var match = await _matchRepository.GetByIdWithDetailsAsync(id);
+
         return match is null ? null : _mapper.Map<MatchDetailDto>(match);
+        //If ternario
     }
 
     public async Task<MatchFormDto?> GetForEditAsync(int id)
@@ -36,15 +39,16 @@ public class MatchService : IMatchService
         if (match is null) return null;
 
         var dto = _mapper.Map<MatchFormDto>(match);
-        dto.Date = dto.Date.ToColombiaTime();        // UTC (DB) -> local (form) 
+        dto.Date = dto.Date.ToColombiaTime();        // UTC (DB) -> local (form)
         return dto;
     }
 
     public async Task CreateAsync(MatchFormDto dto)
     {
         ValidateBusinessRules(dto);
+
         var match = _mapper.Map<Match>(dto);
-        match.Date = dto.Date.ToUtcFromColombia();   // local (form) -> UTC (DB) 
+        match.Date = dto.Date.ToUtcFromColombia();   // local (form) -> UTC (DB)
         await _matchRepository.AddAsync(match);
     }
 
@@ -64,15 +68,13 @@ public class MatchService : IMatchService
     public async Task DeactivateAsync(int id)
         => await _matchRepository.DeactivateAsync(id);
 
-    // ---- Business rules (Guía, regla #1 y afines) ---- 
+    // ---- Business rules (Guía, regla #1 y afines) ----
     private static void ValidateBusinessRules(MatchFormDto dto)
     {
         if (dto.HomeTeamId == dto.AwayTeamId)
-            throw new InvalidOperationException(
-                "El equipo local y el visitante no pueden ser el mismo.");
+            throw new InvalidOperationException("El equipo local y el visitante no pueden ser el mismo.");
 
         if (dto.Date.ToUtcFromColombia() <= DateTime.UtcNow)
-            throw new InvalidOperationException(
-                "La fecha del partido debe ser futura.");
+            throw new InvalidOperationException("La fecha del partido debe ser futura.");
     }
 }

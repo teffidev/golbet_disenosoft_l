@@ -1,4 +1,9 @@
-﻿@page
-@model GolBet.Web.Views.Matches.EditModel
-@{
-}
+﻿@model GolBet.Services.DTOs.MatchFormDto 
+@{ ViewData["Title"] = "Editar partido"; } 
+
+<h2 class="mb-4">Editar partido</h2> 
+<partial name="_MatchForm" model="Model" />   
+
+@section Scripts { 
+    <partial name="_ValidationScriptsPartial" /> 
+} 

@@ -1,5 +1,6 @@
 ﻿using GolBet.Entities;
 using GolBet.Entities.Enums;
+
 namespace GolBet.Repositories.Interfaces;
 
 public interface IMatchRepository : IGenericRepository<Match>

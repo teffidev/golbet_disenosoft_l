@@ -3,12 +3,14 @@ using GolBet.Entities;
 using GolBet.Repositories.Interfaces;
 using GolBet.Services.DTOs;
 using GolBet.Services.Interfaces;
+
 namespace GolBet.Services.Implementations;
 
 public class TeamService : ITeamService
 {
     private readonly IGenericRepository<Team> _teamRepository;
     private readonly IMapper _mapper;
+
     public TeamService(IGenericRepository<Team> teamRepository, IMapper mapper)
     {
         _teamRepository = teamRepository;
@@ -32,10 +34,10 @@ public class TeamService : ITeamService
         var team = await _teamRepository.GetByIdAsync(dto.Id)
             ?? throw new KeyNotFoundException($"Team {dto.Id} not found.");
 
-        _mapper.Map(dto, team);              // applies dto values onto the tracked entity 
+        _mapper.Map(dto, team);              // applies dto values onto the tracked entity
         await _teamRepository.UpdateAsync(team);
     }
 
     public async Task DeactivateAsync(int id)
-        => await _teamRepository.DeactivateAsync(id);
+            => await _teamRepository.DeactivateAsync(id);
 }

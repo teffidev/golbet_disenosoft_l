@@ -1,4 +1,5 @@
 ﻿using GolBet.Services.DTOs;
+
 namespace GolBet.Services.Interfaces;
 
 public interface ITeamService

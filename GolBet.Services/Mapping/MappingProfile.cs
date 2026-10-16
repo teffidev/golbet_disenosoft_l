@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GolBet.Entities;
 using GolBet.Services.DTOs;
+
 namespace GolBet.Services.Mapping;
 
 public class MappingProfile : Profile
@@ -8,13 +9,15 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Flattening by convention:
-        // MatchDto.HomeTeamName  <- Match.HomeTeam.Name 
-        // MatchDto.AwayTeamCrestUrl <- Match.AwayTeam.CrestUrl 
+        // MatchDto.HomeTeamName  <- Match.HomeTeam.Name
+        // MatchDto.AwayTeamCrestUrl <- Match.AwayTeam.CrestUrl
         CreateMap<Match, MatchDto>();
 
+        // GolBet.Services/Mapping/MappingProfile.cs
         CreateMap<Match, MatchDetailDto>()
-            .ForMember(dto => dto.TotalBets,
-               options => options.MapFrom(match => match.Bets.Count));
+            .ForMember(dto => dto.TotalBets,            //Destino
+                       options => options.MapFrom(
+                           match => match.Bets.Count)); //Origen
 
         CreateMap<Team, TeamDto>();
         CreateMap<TeamFormDto, Team>().ReverseMap();

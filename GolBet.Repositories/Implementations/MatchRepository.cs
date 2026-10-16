@@ -5,20 +5,23 @@ using GolBet.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GolBet.Repositories.Implementations;
+
 public class MatchRepository : GenericRepository<Match>, IMatchRepository
 {
     public MatchRepository(AppDbContext context) : base(context) { }
+
     public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null)
     {
         var query = _dbSet
-            .Include(m => m.HomeTeam)
+            .Include(m => m.HomeTeam) //El include viene siendo un JOIN en SQL
             .Include(m => m.AwayTeam)
             .Where(m => m.IsActive)
             .AsNoTracking()
-            .AsQueryable();
+            .AsQueryable(); //El asQueryable es para poder aplicar filtros dinámicos, ya que el Include devuelve un IQueryable y no un IEnumerable
 
         if (status.HasValue)
             query = query.Where(m => m.Status == status.Value);
+
         return await query.OrderBy(m => m.Date).ToListAsync();
     }
 
