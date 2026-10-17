@@ -10,7 +10,7 @@ public class MatchRepository : GenericRepository<Match>, IMatchRepository
 {
     public MatchRepository(AppDbContext context) : base(context) { }
 
-    public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null)
+    public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null, string? search = null)
     {
         var query = _dbSet
             .Include(m => m.HomeTeam) //El include viene siendo un JOIN en SQL
@@ -21,6 +21,13 @@ public class MatchRepository : GenericRepository<Match>, IMatchRepository
 
         if (status.HasValue)
             query = query.Where(m => m.Status == status.Value);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchTerm = search.Trim().ToLower(); // Normalizamos a minúsculas
+            query = query.Where(m => m.HomeTeam.Name.ToLower().Contains(searchTerm) ||
+                                    m.AwayTeam.Name.ToLower().Contains(searchTerm));
+        }
 
         return await query.OrderBy(m => m.Date).ToListAsync();
     }
